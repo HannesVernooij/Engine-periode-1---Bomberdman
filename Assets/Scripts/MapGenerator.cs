@@ -57,9 +57,9 @@ public class MapGenerator : MonoBehaviour
         return value % 2 != 0;
     }
 
-    public bool GetTile(int x, int y)
+    public GameObject GetTile(int x, int y)
     {
-        if (mapArray[x,y] == null) return true;
-        else return false;
+        if (mapArray[x,y] == null) return mapArray[x,y];
+        else return null;
     }
 }
