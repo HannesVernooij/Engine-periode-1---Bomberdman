@@ -25,7 +25,12 @@ public class MapGenerator : MonoBehaviour
 
         mapArray = new GameObject[mapHeight, mapWidth];
 
-        floor = Instantiate(floorPrefab, new Vector3(mapHeight / 2, 0, mapWidth / 2), Quaternion.identity) as GameObject;
+        Vector3 center = new Vector3(mapHeight / 2, 0, mapWidth / 2);
+        Camera.main.transform.position = new Vector3(center.x,10,center.z);
+
+        Camera.main.orthographicSize = mapWidth / 2;
+
+        floor = Instantiate(floorPrefab, center, Quaternion.identity) as GameObject;
         floor.transform.localScale = new Vector3(floor.transform.localScale.x * mapHeight, 1, floor.transform.localScale.z * mapWidth);
 
         for (int i = 0; i < mapHeight; i++)
