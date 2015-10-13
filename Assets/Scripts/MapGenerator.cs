@@ -9,7 +9,7 @@ public class MapGenerator : MonoBehaviour
     //Width & Height should always be uneven
     public int mapHeight;
     public int mapWidth;
-    GameObject[,] mapArray;
+    public GameObject[,] mapArray;
 
     void Start()
     {
@@ -40,6 +40,7 @@ public class MapGenerator : MonoBehaviour
 
         //Set floor
         floor = Instantiate(floorPrefab, center, Quaternion.identity) as GameObject;
+        floor.name = "Floor";
         floor.transform.localScale = new Vector3(floor.transform.localScale.x * mapWidth, 1, floor.transform.localScale.z * mapHeight);
 
         //Start placing walls and blocks
@@ -51,17 +52,20 @@ public class MapGenerator : MonoBehaviour
                 if (x == 0 || x == mapWidth - 1)
                 {
                     mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
+                    mapArray[x, z].name = "Wall_" + x + "_" + z;
                 }
 
                 else if (z == 0 || z == mapHeight - 1)
                 {
                     mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
+                    mapArray[x, z].name = "Wall_" + x + "_" + z;
                 }
 
                 //Block placement
                 else if (x != 1 && x != mapWidth - 2 && z != 1 && z != mapHeight - 2 && !IsOdd(z) && !IsOdd(x))
                 {
                     mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
+                    mapArray[x, z].name = "Wall_" + x + "_" + z;
                 }
 
                 /* Random crate spawning - NOT DONE
