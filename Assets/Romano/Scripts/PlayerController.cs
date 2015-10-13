@@ -8,6 +8,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Vector3 position;
 
+    [SerializeField]
+    private GameObject bombSpawnPosition;
+    [SerializeField]
+    private GameObject bomb;
+    [SerializeField]
+    private bool canDrop;
+    private float dropTimer = 0.5f;
+
     // Use this for initialization
     private void Start()
     {
@@ -18,7 +26,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-
+        Drop();
     }
 
     private void FixedUpdate()
@@ -50,5 +58,26 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
+    }
+
+    private void Drop()
+    {
+        if (dropTimer > 0)
+        {
+            dropTimer -= Time.deltaTime;
+        }
+
+        if (dropTimer <= 0)
+        {
+            canDrop = true;
+        }
+
+        if (Input.GetButtonDown("Jump") && canDrop)
+        {
+            GameObject GO = (GameObject)Instantiate(bomb, bombSpawnPosition.transform.position, Quaternion.identity);
+
+            canDrop = false;
+            dropTimer = 0.5f;
+        }
     }
 }
