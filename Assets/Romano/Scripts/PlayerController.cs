@@ -16,6 +16,8 @@ public class PlayerController : MonoBehaviour
     private bool canDrop;
     private float dropTimer = 0.5f;
 
+    private int bombDistance = 5;
+
     // Use this for initialization
     private void Start()
     {
@@ -32,6 +34,15 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Movement();
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.name == "Crate")
+        {
+            collider.gameObject.GetComponent<Crate>().RandomPowerup();
+            Destroy(collider.gameObject);
+        }
     }
 
     private void Movement()
@@ -75,6 +86,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && canDrop)
         {
             GameObject GO = (GameObject)Instantiate(bomb, bombSpawnPosition.transform.position, Quaternion.identity);
+            GO.GetComponent<Bomb>().CalculateObjectsAffected(GO.transform.position, bombDistance);
 
             canDrop = false;
             dropTimer = 0.5f;
