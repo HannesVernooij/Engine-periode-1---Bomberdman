@@ -4,6 +4,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
+    private int playerID;
+    [SerializeField]
     private int speed = 10;
     [SerializeField]
     private Vector3 position;
@@ -47,25 +49,29 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxis("Horizontal " + playerID);
+        float vertical = Input.GetAxis("Vertical " + playerID);
 
         if (vertical > 0 && transform.position == position)
         {
             position += Vector3.forward;
+            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
         }
         else if (vertical < 0 && transform.position == position)
         {
             position += Vector3.back;
+            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
         }
 
         if (horizontal < 0 && transform.position == position)
         {
             position += Vector3.left;
+            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
         }
         else if (horizontal > 0 && transform.position == position)
         {
             position += Vector3.right;
+            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
         }
 
         transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
@@ -83,7 +89,7 @@ public class PlayerController : MonoBehaviour
             canDrop = true;
         }
 
-        if (Input.GetButtonDown("Jump") && canDrop)
+        if (Input.GetButtonDown("Drop " + playerID) && canDrop)
         {
             GameObject GO = (GameObject)Instantiate(bomb, bombSpawnPosition.transform.position, Quaternion.identity);
             GO.GetComponent<Bomb>().CalculateObjectsAffected(GO.transform.position, bombDistance);

@@ -13,7 +13,7 @@ public class MapGenerator : MonoBehaviour
 
     void Start()
     {
-        Generate();
+        // Generate(); Wordt nu uitgevoerd vanuit de IngameMenu script
     }
 
     public void Generate()
