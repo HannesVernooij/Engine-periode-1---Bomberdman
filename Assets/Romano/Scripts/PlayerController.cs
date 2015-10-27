@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
+        //Movement();
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -47,35 +47,35 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Movement()
-    {
-        float horizontal = Input.GetAxis("Horizontal " + playerID);
-        float vertical = Input.GetAxis("Vertical " + playerID);
+    //private void Movement()
+    //{
+    //    float horizontal = Input.GetAxis("Horizontal " + playerID);
+    //    float vertical = Input.GetAxis("Vertical " + playerID);
 
-        if (vertical > 0 && transform.position == position)
-        {
-            position += Vector3.forward;
-            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-        }
-        else if (vertical < 0 && transform.position == position)
-        {
-            position += Vector3.back;
-            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-        }
+    //    if (vertical > 0 && transform.position == position)
+    //    {
+    //        position += Vector3.forward;
+    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
+    //    }
+    //    else if (vertical < 0 && transform.position == position)
+    //    {
+    //        position += Vector3.back;
+    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
+    //    }
 
-        if (horizontal < 0 && transform.position == position)
-        {
-            position += Vector3.left;
-            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-        }
-        else if (horizontal > 0 && transform.position == position)
-        {
-            position += Vector3.right;
-            position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-        }
+    //    if (horizontal < 0 && transform.position == position)
+    //    {
+    //        position += Vector3.left;
+    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
+    //    }
+    //    else if (horizontal > 0 && transform.position == position)
+    //    {
+    //        position += Vector3.right;
+    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
+    //    }
 
-        transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
-    }
+    //    transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
+    //}
 
     private void Drop()
     {
