@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        transform.position = new Vector3(1f, 0f, 1f);
         position = transform.position;
     }
 
@@ -49,8 +48,8 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        float horizontal = Input.GetAxis("Horizontal " + playerID);
-        float vertical = Input.GetAxis("Vertical " + playerID);
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
         if (vertical > 0 && transform.position == position)
         {
@@ -89,7 +88,7 @@ public class PlayerController : MonoBehaviour
             canDrop = true;
         }
 
-        if (Input.GetButtonDown("Drop " + playerID) && canDrop)
+        if (Input.GetButtonDown("Drop") && canDrop)
         {
             GameObject GO = (GameObject)Instantiate(bomb, bombSpawnPosition.transform.position, Quaternion.identity);
             GO.GetComponent<Bomb>().CalculateObjectsAffected(GO.transform.position, bombDistance);
