@@ -11,9 +11,31 @@ public class MapGenerator : MonoBehaviour
     public int mapWidth;
     public GameObject[,] mapArray;
 
+    [SerializeField]
+    private int currentQuadrant = 0;
+    [SerializeField]
+    private int quadrantX = 0;
+    [SerializeField]
+    private int quadrantY = 0;
+
+    [SerializeField]
+    private GameObject crate;
+
+    [SerializeField]
+    private int cratesPerQuadrant;
+
+
     void Start()
     {
         // Generate(); Wordt nu uitgevoerd vanuit de IngameMenu script
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
     }
 
     public void Generate()
@@ -49,23 +71,9 @@ public class MapGenerator : MonoBehaviour
             for (int z = 0; z < mapHeight; z++)
             {
                 //Walls for around map
-                if (x == 0 || x == mapWidth - 1)
+                if ((x == 0 || x == mapWidth - 1) || (z == 0 || z == mapHeight - 1) || (x != 1 && x != mapWidth - 2 && z != 1 && z != mapHeight - 2 && !IsOdd(z) && !IsOdd(x)))
                 {
-                    mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
-                    mapArray[x, z].name = "Wall_" + x + "_" + z;
-                }
-
-                else if (z == 0 || z == mapHeight - 1)
-                {
-                    mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
-                    mapArray[x, z].name = "Wall_" + x + "_" + z;
-                }
-
-                //Block placement
-                else if (x != 1 && x != mapWidth - 2 && z != 1 && z != mapHeight - 2 && !IsOdd(z) && !IsOdd(x))
-                {
-                    mapArray[x, z] = Instantiate(wall, new Vector3(x, 1, z), Quaternion.identity) as GameObject;
-                    mapArray[x, z].name = "Wall_" + x + "_" + z;
+                    PlaceWall(x, z);
                 }
 
                 /* Random crate spawning - NOT DONE
@@ -76,11 +84,74 @@ public class MapGenerator : MonoBehaviour
                 */
             }
         }
+
+        SpawnCrates();
+    }
+
+    private void SpawnCrates()
+    {
+        while (currentQuadrant < 4)
+        {
+            int cratesToSpawn = cratesPerQuadrant;
+
+            while (cratesToSpawn > 0)
+            {
+                for (int x = quadrantX; x < quadrantX + mapWidth / 2; x++)
+                {
+                    for (int y = quadrantY; y < quadrantY + mapHeight / 2; y++)
+                    {
+                        if (cratesToSpawn <= 0)
+                            break;
+                        if (Random.Range(0, 5) == 2 && GetTile(x, y) == null)
+                        {
+                            if (!(x == 1 && y == 1) && !(x == 2 && y == 1) && !(x == 1 && y == 2) && !(x == mapWidth - 1 && y == 1) && !(x == mapWidth - 2 && y == 1))
+                            {
+                                PlaceCrate(x, y);
+                                cratesToSpawn--;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (currentQuadrant == 0 || currentQuadrant == 2)
+            {
+                quadrantX += mapWidth / 2;
+                Debug.Log(quadrantX);
+            }
+            if (currentQuadrant == 1)
+            {
+                quadrantX = 0;
+                quadrantY += mapHeight / 2;
+                Debug.Log(quadrantY);
+            }
+
+            currentQuadrant++;
+        }
+
+        /*for (int x = 0; x < mapWidth; x++)
+        {
+            for (int z = 0; z < mapHeight; z++)
+            {
+                if (GetTile(x, z) == null)
+                {
+                    mapArray[x, z] = Instantiate(crate, new Vector3(x, 0.5f, z), Quaternion.identity) as GameObject;
+                    mapArray[x, z].name = "Crate_" + x + "_" + z;
+                }
+            }
+        }*/
     }
 
     void PlaceWall(int x, int y)
     {
         mapArray[x, y] = Instantiate(wall, new Vector3(x, 1, y), Quaternion.identity) as GameObject;
+        mapArray[x, y].name = "Wall_" + x + "_" + y;
+    }
+
+    void PlaceCrate(int x, int y)
+    {
+        mapArray[x, y] = Instantiate(crate, new Vector3(x, 1, y), Quaternion.identity) as GameObject;
+        mapArray[x, y].name = "Crate_" + x + "_" + y;
     }
 
     static bool IsOdd(int value)
