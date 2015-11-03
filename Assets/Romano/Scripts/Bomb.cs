@@ -5,6 +5,20 @@ public class Bomb : MonoBehaviour
 {
     private float lifeTimer = 2f;
 
+    private GameObject playerWhoDroppedMe;
+    public GameObject PlayerWhoDroppedMe
+    {
+        get
+        {
+            return playerWhoDroppedMe;
+        }
+
+        set
+        {
+            playerWhoDroppedMe = value;
+        }
+    }
+
     // Use this for initialization
     private void Start()
     {
@@ -14,7 +28,13 @@ public class Bomb : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        SnapToGrid();
+        DestroyOverLifetime();
+    }
 
+    private void SnapToGrid()
+    {
+        transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), 0f, Mathf.RoundToInt(transform.position.z));
     }
 
     public void CalculateObjectsAffected(Vector3 position, int distance)
@@ -26,7 +46,7 @@ public class Bomb : MonoBehaviour
 
         if (Physics.Raycast(position, transform.forward, out hitForward, distance))
         {
-            if (hitForward.collider.gameObject.name != "Wall(Clone)")
+            if (hitForward.collider.gameObject.tag != "Wall")
             {
                 Destroy(hitForward.collider.gameObject);
             }
@@ -34,7 +54,7 @@ public class Bomb : MonoBehaviour
 
         if (Physics.Raycast(position, -transform.forward, out hitBackward, distance))
         {
-            if (hitBackward.collider.gameObject.name != "Wall(Clone)")
+            if (hitBackward.collider.gameObject.tag != "Wall")
             {
                 Destroy(hitBackward.collider.gameObject);
             }
@@ -42,7 +62,7 @@ public class Bomb : MonoBehaviour
 
         if (Physics.Raycast(position, -transform.right, out hitLeft, distance))
         {
-            if (hitLeft.collider.gameObject.name != "Wall(Clone)")
+            if (hitLeft.collider.gameObject.tag != "Wall")
             {
                 Destroy(hitLeft.collider.gameObject);
             }
@@ -50,7 +70,7 @@ public class Bomb : MonoBehaviour
 
         if (Physics.Raycast(position, transform.right, out hitRight, distance))
         {
-            if (hitRight.collider.gameObject.name != "Wall(Clone)")
+            if (hitRight.collider.gameObject.tag != "Wall")
             {
                 Destroy(hitRight.collider.gameObject);
             }
@@ -66,6 +86,7 @@ public class Bomb : MonoBehaviour
 
         if (lifeTimer <= 0)
         {
+            CalculateObjectsAffected(transform.position, playerWhoDroppedMe.GetComponent<PlayerController>().BombDistance);
             Destroy(gameObject);
         }
     }

@@ -5,8 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private int playerID;
-    [SerializeField]
-    private int speed = 10;
+
     [SerializeField]
     private Vector3 position;
 
@@ -18,7 +17,33 @@ public class PlayerController : MonoBehaviour
     private bool canDrop;
     private float dropTimer = 0.5f;
 
+    private int speed = 10;
+    public int Speed
+    {
+        get
+        {
+            return speed;
+        }
+
+        set
+        {
+            speed = value;
+        }
+    }
+
     private int bombDistance = 5;
+    public int BombDistance
+    {
+        get
+        {
+            return bombDistance;
+        }
+
+        set
+        {
+            bombDistance = value;
+        }
+    }
 
     // Use this for initialization
     private void Start()
@@ -34,7 +59,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Movement();
+        Movement();
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -46,42 +71,13 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
     private void Movement()
     {
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
-=======
-    //private void Movement()
-    //{
-    //    float horizontal = Input.GetAxis("Horizontal " + playerID);
-    //    float vertical = Input.GetAxis("Vertical " + playerID);
->>>>>>> origin/master
 
-    //    if (vertical > 0 && transform.position == position)
-    //    {
-    //        position += Vector3.forward;
-    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-    //    }
-    //    else if (vertical < 0 && transform.position == position)
-    //    {
-    //        position += Vector3.back;
-    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-    //    }
-
-    //    if (horizontal < 0 && transform.position == position)
-    //    {
-    //        position += Vector3.left;
-    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-    //    }
-    //    else if (horizontal > 0 && transform.position == position)
-    //    {
-    //        position += Vector3.right;
-    //        position = new Vector3(Mathf.RoundToInt(position.x), 0f, Mathf.RoundToInt(position.z));
-    //    }
-
-    //    transform.position = Vector3.MoveTowards(transform.position, position, speed * Time.deltaTime);
-    //}
+        transform.position += new Vector3(horizontal * speed * Time.deltaTime, 0f, vertical * speed * Time.deltaTime);
+    }
 
     private void Drop()
     {
@@ -98,7 +94,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Drop") && canDrop)
         {
             GameObject GO = (GameObject)Instantiate(bomb, bombSpawnPosition.transform.position, Quaternion.identity);
-            GO.GetComponent<Bomb>().CalculateObjectsAffected(GO.transform.position, bombDistance);
+            GO.GetComponent<Bomb>().PlayerWhoDroppedMe = gameObject;
 
             canDrop = false;
             dropTimer = 0.5f;
