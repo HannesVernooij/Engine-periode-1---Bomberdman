@@ -11,11 +11,8 @@ public class MapGenerator : MonoBehaviour
     public int mapWidth;
     public GameObject[,] mapArray;
 
-    [SerializeField]
     private int currentQuadrant = 0;
-    [SerializeField]
     private int quadrantX = 0;
-    [SerializeField]
     private int quadrantY = 0;
 
     [SerializeField]
@@ -88,6 +85,7 @@ public class MapGenerator : MonoBehaviour
         SpawnCrates();
     }
 
+    //Map is divided in 4 quadrants, for each quadrant cratesToSpawn is spawned.
     private void SpawnCrates()
     {
         while (currentQuadrant < 4)
@@ -104,7 +102,8 @@ public class MapGenerator : MonoBehaviour
                             break;
                         if (Random.Range(0, 5) == 2 && GetTile(x, y) == null)
                         {
-                            if (!(x == 1 && y == 1) && !(x == 2 && y == 1) && !(x == 1 && y == 2) && !(x == mapWidth - 1 && y == 1) && !(x == mapWidth - 2 && y == 1))
+                            //Stupidly long if statement to prevent crates from spawning in the corner
+                            if (!(x == 1 && y == 1) && !(x == 2 && y == 1) && !(x == 1 && y == 2) && !(x == mapWidth - 1 && y == 1) && !(x == mapWidth - 2 && y == 1) && !(x == mapWidth - 2 && y == 2) && !(x == 1 && y == mapHeight - 1) && !(x == 2 && y == mapHeight - 1) && !(x == 1 && y == mapHeight - 2) && !(x == mapWidth - 1 && y == mapHeight - 1) && !(x == mapWidth - 2 && y == mapHeight - 1) && !(x == mapWidth - 1 && y == mapHeight - 2))
                             {
                                 PlaceCrate(x, y);
                                 cratesToSpawn--;
@@ -164,5 +163,18 @@ public class MapGenerator : MonoBehaviour
         //X = now actually width & z = is now actually height
         if (mapArray[x, z] != null) return mapArray[x, z];
         else return null;
+    }
+
+    public Vector3[] GetPlayerSpawnPoints()
+    {
+        Vector3[] playerSpawnPoints = new Vector3[4];
+        int y = 1;
+
+        playerSpawnPoints[0] = new Vector3(1, y, 1);
+        playerSpawnPoints[1] = new Vector3(mapWidth, y, 1);
+        playerSpawnPoints[2] = new Vector3(1, y, mapHeight - 1);
+        playerSpawnPoints[3] = new Vector3(mapWidth - 1, y, mapHeight - 1);
+
+        return playerSpawnPoints;
     }
 }
