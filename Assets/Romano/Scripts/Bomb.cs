@@ -19,10 +19,12 @@ public class Bomb : MonoBehaviour
         }
     }
 
+    private GameManager gameManager;
+
     // Use this for initialization
     private void Start()
     {
-
+        gameManager = GameObject.Find("_Scripts").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
@@ -48,6 +50,11 @@ public class Bomb : MonoBehaviour
         {
             if (hitForward.collider.gameObject.tag != "Wall")
             {
+                if (hitForward.collider.gameObject.tag == "Player")
+                {
+                    gameManager.PlayerAmount -= 1;
+                }
+
                 Destroy(hitForward.collider.gameObject);
             }
         }
@@ -56,6 +63,11 @@ public class Bomb : MonoBehaviour
         {
             if (hitBackward.collider.gameObject.tag != "Wall")
             {
+                if (hitBackward.collider.gameObject.tag == "Player")
+                {
+                    gameManager.PlayerAmount -= 1;
+                }
+
                 Destroy(hitBackward.collider.gameObject);
             }
         }
@@ -64,6 +76,11 @@ public class Bomb : MonoBehaviour
         {
             if (hitLeft.collider.gameObject.tag != "Wall")
             {
+                if (hitLeft.collider.gameObject.tag == "Player")
+                {
+                    gameManager.PlayerAmount -= 1;
+                }
+
                 Destroy(hitLeft.collider.gameObject);
             }
         }
@@ -72,6 +89,11 @@ public class Bomb : MonoBehaviour
         {
             if (hitRight.collider.gameObject.tag != "Wall")
             {
+                if (hitRight.collider.gameObject.tag == "Player")
+                {
+                    gameManager.PlayerAmount -= 1;
+                }
+
                 Destroy(hitRight.collider.gameObject);
             }
         }
