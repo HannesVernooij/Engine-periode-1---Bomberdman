@@ -88,6 +88,8 @@ public class MapGenerator : MonoBehaviour
     //Map is divided in 4 quadrants, for each quadrant cratesToSpawn is spawned.
     private void SpawnCrates()
     {
+        Debug.Log(mapHeight);
+        Debug.Log(mapWidth);
         while (currentQuadrant < 4)
         {
             int cratesToSpawn = cratesPerQuadrant;
@@ -103,7 +105,7 @@ public class MapGenerator : MonoBehaviour
                         if (Random.Range(0, 5) == 2 && GetTile(x, y) == null)
                         {
                             //Stupidly long if statement to prevent crates from spawning in the corner
-                            if (!(x == 1 && y == 1) && !(x == 2 && y == 1) && !(x == 1 && y == 2) && !(x == mapWidth - 1 && y == 1) && !(x == mapWidth - 2 && y == 1) && !(x == mapWidth - 2 && y == 2) && !(x == 1 && y == mapHeight - 1) && !(x == 2 && y == mapHeight - 1) && !(x == 1 && y == mapHeight - 2) && !(x == mapWidth - 1 && y == mapHeight - 1) && !(x == mapWidth - 2 && y == mapHeight - 1) && !(x == mapWidth - 1 && y == mapHeight - 2))
+                            if (!(x == 1 && y == 1) && !(x == 2 && y == 1) && !(x == 1 && y == 2) && !(x == mapWidth - 2 && y == 1) && !(x == mapWidth - 3 && y == 1) && !(x == mapWidth - 2 && y == 2) && !(x == 1 && y == mapHeight - 2) && !(x == 2 && y == mapHeight - 2) && !(x == 1 && y == mapHeight - 3) && !(x == mapWidth - 2 && y == mapHeight - 2) && !(x == mapWidth - 3 && y == mapHeight - 2) && !(x == mapWidth - 2 && y == mapHeight - 3))
                             {
                                 PlaceCrate(x, y);
                                 cratesToSpawn--;
