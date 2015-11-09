@@ -17,7 +17,10 @@ public class PlayerController : MonoBehaviour
     private bool canDrop;
     private float dropTimer = 0.5f;
 
-    private int speed = 10;
+    private float moveX = 0f;
+    private float moveZ = 0f;
+
+    private int speed = 15;
     public int Speed
     {
         get
@@ -73,10 +76,19 @@ public class PlayerController : MonoBehaviour
 
     private void Movement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+        moveX = Input.GetAxis("Horizontal");
+        moveZ = Input.GetAxis("Vertical");
 
-        transform.position += new Vector3(horizontal * speed * Time.deltaTime, 0f, vertical * speed * Time.deltaTime);
+	if (Mathf.Abs(moveX) > Mathf.Abs(moveZ))
+	{
+		moveZ = 0;
+	}
+	else
+	{
+		moveX = 0;
+	}
+
+        GetComponent<Rigidbody>().velocity = new Vector3(moveX * speed, GetComponent<Rigidbody>().velocity.y, moveZ * speed);
     }
 
     private void Drop()
