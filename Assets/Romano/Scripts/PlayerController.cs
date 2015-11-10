@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     private bool canDrop;
     private float dropTimer = 0.5f;
 
+<<<<<<< HEAD
     private int health = 1;
     public int Health
     {
@@ -44,6 +45,12 @@ public class PlayerController : MonoBehaviour
     }
 
     private int speed = 200;
+=======
+    private float moveX = 0f;
+    private float moveZ = 0f;
+
+    private int speed = 15;
+>>>>>>> origin/master
     public int Speed
     {
         get
@@ -124,8 +131,28 @@ public class PlayerController : MonoBehaviour
         {
             horizontal = 0;
         }
+<<<<<<< HEAD
 
         GetComponent<Rigidbody>().velocity = new Vector3(horizontal * speed * Time.deltaTime, 1f, vertical * speed * Time.deltaTime);
+=======
+    }
+
+    private void Movement()
+    {
+        moveX = Input.GetAxis("Horizontal");
+        moveZ = Input.GetAxis("Vertical");
+
+	if (Mathf.Abs(moveX) > Mathf.Abs(moveZ))
+	{
+		moveZ = 0;
+	}
+	else
+	{
+		moveX = 0;
+	}
+
+        GetComponent<Rigidbody>().velocity = new Vector3(moveX * speed, GetComponent<Rigidbody>().velocity.y, moveZ * speed);
+>>>>>>> origin/master
     }
 
     private void Drop()
