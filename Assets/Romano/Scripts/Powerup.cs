@@ -24,8 +24,18 @@ public class Powerup : MonoBehaviour
     {
         if (collider.gameObject.tag == "Player")
         {
-            collider.gameObject.GetComponent<PlayerController>().Speed += extraSpeed;
-            collider.gameObject.GetComponent<PlayerController>().BombDistance += extraBombDistance;
+            GameObject player = collider.gameObject;
+            PlayerController playerController = player.GetComponent<PlayerController>();
+
+            if (playerController.Speed < playerController.GetSpeedLimit)
+            {
+                playerController.Speed += extraSpeed;
+            }
+
+            if (playerController.BombDistance < playerController.GetBombDistanceLimit)
+            {
+                playerController.BombDistance += extraBombDistance;
+            }
 
             Destroy(gameObject);
         }

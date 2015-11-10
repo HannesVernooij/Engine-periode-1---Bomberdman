@@ -5,7 +5,7 @@ using System.Collections;
 public class IngameMenu : MonoBehaviour
 {
     [SerializeField]
-    private GameObject canvas;
+    private GameObject canvasIngame;
 
     [SerializeField]
     private Slider lengthUI;
@@ -18,9 +18,17 @@ public class IngameMenu : MonoBehaviour
     private Text widthNumberUI;
 
     [SerializeField]
+    private Slider cratesUI;
+    [SerializeField]
+    private Text cratesNumberUI;
+
+    [SerializeField]
     private Slider playersUI;
     [SerializeField]
     private Text playersNumberUI;
+
+    [SerializeField]
+    private GameObject canvasEndgame;
 
     private GameManager gameManager;
 
@@ -38,10 +46,11 @@ public class IngameMenu : MonoBehaviour
 
     public void Create()
     {
-        canvas.SetActive(false);
+        canvasIngame.SetActive(false);
 
         GameObject.Find("MapCreator").GetComponent<MapGenerator>().mapHeight = (int)lengthUI.value;
         GameObject.Find("MapCreator").GetComponent<MapGenerator>().mapWidth = (int)widthUI.value;
+        GameObject.Find("MapCreator").GetComponent<MapGenerator>().CratesPerQuadrant = (int)cratesUI.value;
         gameManager.PlayerAmount = (int)playersUI.value;
 
         GameObject.Find("MapCreator").GetComponent<MapGenerator>().Generate();
@@ -50,11 +59,20 @@ public class IngameMenu : MonoBehaviour
 
     private void UI()
     {
-        if (canvas.activeSelf)
+        if (canvasIngame.activeSelf)
         {
             lengthNumberUI.text = "" + (int)lengthUI.value;
             widthNumberUI.text = "" + (int)widthUI.value;
+            cratesNumberUI.text = "" + (int)cratesUI.value;
             playersNumberUI.text = "" + (int)playersUI.value;
+        }
+
+        if (gameManager.PlayerAmount == 1)
+        {
+            if (!canvasEndgame.activeSelf)
+            {
+                canvasEndgame.SetActive(true);
+            }
         }
     }
 }

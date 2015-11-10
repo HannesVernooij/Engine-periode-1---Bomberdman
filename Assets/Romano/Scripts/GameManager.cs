@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour
 
     private MapGenerator mapGenerator;
 
+    [SerializeField]
+    private Text winnerUI;
+
     // Use this for initialization
     private void Start()
     {
@@ -46,6 +50,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < playerAmount; i++)
         {
             GameObject GO = (GameObject)Instantiate(player, spawnPositions[i], Quaternion.identity);
+            GO.GetComponent<PlayerController>().PlayerID = (i + 1);
             GO.GetComponent<Renderer>().material = materials[i];
             GO.name = "Player " + (i + 1);
 
@@ -61,7 +66,7 @@ public class GameManager : MonoBehaviour
             {
                 if (currentPlayers[i] != null)
                 {
-                    Debug.Log("Player " + (i + 1) + " wins");
+                    winnerUI.text = "Player " + (i + 1) + " wins";
                 }
             }
         }

@@ -20,6 +20,18 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField]
     private int cratesPerQuadrant;
+    public int CratesPerQuadrant
+    {
+        get
+        {
+            return cratesPerQuadrant;
+        }
+
+        set
+        {
+            cratesPerQuadrant = value;
+        }
+    }
 
 
     void Start()
@@ -173,9 +185,9 @@ public class MapGenerator : MonoBehaviour
         int y = 1;
 
         playerSpawnPoints[0] = new Vector3(1, y, 1);
-        playerSpawnPoints[1] = new Vector3(mapWidth, y, 1);
-        playerSpawnPoints[2] = new Vector3(1, y, mapHeight - 1);
-        playerSpawnPoints[3] = new Vector3(mapWidth - 1, y, mapHeight - 1);
+        playerSpawnPoints[1] = new Vector3(mapWidth - 2, y, 1);
+        playerSpawnPoints[2] = new Vector3(1, y, mapHeight - 2);
+        playerSpawnPoints[3] = new Vector3(mapWidth - 2, y, mapHeight - 2);
 
         return playerSpawnPoints;
     }

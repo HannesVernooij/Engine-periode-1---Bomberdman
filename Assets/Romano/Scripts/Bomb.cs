@@ -3,21 +3,7 @@ using System.Collections;
 
 public class Bomb : MonoBehaviour
 {
-    private float lifeTimer = 2f;
-
-    private GameObject playerWhoDroppedMe;
-    public GameObject PlayerWhoDroppedMe
-    {
-        get
-        {
-            return playerWhoDroppedMe;
-        }
-
-        set
-        {
-            playerWhoDroppedMe = value;
-        }
-    }
+    private float lifeTimer = 0.2f;
 
     private GameManager gameManager;
 
@@ -39,7 +25,7 @@ public class Bomb : MonoBehaviour
         transform.position = new Vector3(Mathf.RoundToInt(transform.position.x), 0f, Mathf.RoundToInt(transform.position.z));
     }
 
-    public void CalculateObjectsAffected(Vector3 position, int distance)
+    public void CalculateObjectsAffected(Vector3 position, int distance, GameObject playerWhoDroppedMe)
     {
         RaycastHit hitForward;
         RaycastHit hitBackward;
@@ -48,53 +34,77 @@ public class Bomb : MonoBehaviour
 
         if (Physics.Raycast(position, transform.forward, out hitForward, distance))
         {
-            if (hitForward.collider.gameObject.tag != "Wall")
+            GameObject GO = hitForward.collider.gameObject;
+
+            if (GO.tag != "Wall")
             {
-                if (hitForward.collider.gameObject.tag == "Player")
+                if (GO.tag == "Player")
                 {
-                    gameManager.PlayerAmount -= 1;
+                    GO.GetComponent<PlayerController>().Health -= 1;
                 }
 
-                Destroy(hitForward.collider.gameObject);
+                if (GO.tag == "Crate")
+                {
+                    GO.GetComponent<Crate>().RandomPowerup();
+                    Destroy(GO);
+                }
             }
         }
 
         if (Physics.Raycast(position, -transform.forward, out hitBackward, distance))
         {
-            if (hitBackward.collider.gameObject.tag != "Wall")
+            if (hitBackward.collider.gameObject.tag != "Wall" && hitBackward.collider.gameObject != playerWhoDroppedMe)
             {
-                if (hitBackward.collider.gameObject.tag == "Player")
+                GameObject GO = hitBackward.collider.gameObject;
+
+                if (GO.tag == "Player")
                 {
-                    gameManager.PlayerAmount -= 1;
+                    GO.GetComponent<PlayerController>().Health -= 1;
                 }
 
-                Destroy(hitBackward.collider.gameObject);
+                if (GO.tag == "Crate")
+                {
+                    GO.GetComponent<Crate>().RandomPowerup();
+                    Destroy(GO);
+                }
             }
         }
 
         if (Physics.Raycast(position, -transform.right, out hitLeft, distance))
         {
-            if (hitLeft.collider.gameObject.tag != "Wall")
+            GameObject GO = hitLeft.collider.gameObject;
+
+            if (GO.tag != "Wall")
             {
-                if (hitLeft.collider.gameObject.tag == "Player")
+                if (GO.tag == "Player")
                 {
-                    gameManager.PlayerAmount -= 1;
+                    GO.GetComponent<PlayerController>().Health -= 1;
                 }
 
-                Destroy(hitLeft.collider.gameObject);
+                if (GO.tag == "Crate")
+                {
+                    GO.GetComponent<Crate>().RandomPowerup();
+                    Destroy(GO);
+                }
             }
         }
 
         if (Physics.Raycast(position, transform.right, out hitRight, distance))
         {
-            if (hitRight.collider.gameObject.tag != "Wall")
+            GameObject GO = hitRight.collider.gameObject;
+
+            if (GO.tag != "Wall")
             {
-                if (hitRight.collider.gameObject.tag == "Player")
+                if (GO.tag == "Player")
                 {
-                    gameManager.PlayerAmount -= 1;
+                    GO.GetComponent<PlayerController>().Health -= 1;
                 }
 
-                Destroy(hitRight.collider.gameObject);
+                if (GO.tag == "Crate")
+                {
+                    GO.GetComponent<Crate>().RandomPowerup();
+                    Destroy(GO);
+                }
             }
         }
     }
@@ -108,7 +118,6 @@ public class Bomb : MonoBehaviour
 
         if (lifeTimer <= 0)
         {
-            CalculateObjectsAffected(transform.position, playerWhoDroppedMe.GetComponent<PlayerController>().BombDistance);
             Destroy(gameObject);
         }
     }
